@@ -1,5 +1,6 @@
 import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'
 import { fetch } from 'undici'
+import type { APIRoute } from 'astro'
 interface IApiOptions {
   method: string,
   headers: {
@@ -8,7 +9,7 @@ interface IApiOptions {
   },
   body: string,
 }
-export const post = async (options:IApiOptions) => {
+export const post:APIRoute = async (options:IApiOptions) => {
   const response = await fetchApi(options)
   console.log('api返回的信息xx', response)
 
