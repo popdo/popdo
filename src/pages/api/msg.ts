@@ -1,5 +1,5 @@
 import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'
-
+import { fetch } from 'undici'
 interface IApiOptions {
   method: string,
   headers: {
