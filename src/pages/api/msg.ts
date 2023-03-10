@@ -8,9 +8,9 @@ interface IApiOptions {
   },
   body: string,
 }
-export const generateMsg = async (options:IApiOptions) => {
+export const post = async (options:IApiOptions) => {
   const response = await fetchApi(options)
-  console.log('api返回的信息', response)
+  console.log('api返回的信息xx', response)
 
   return new Response(parseOpenAIStream(response))
 }
