@@ -1,6 +1,13 @@
-import type { IApiOptions } from '@/types/IApi'
-import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'
 
+import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'
+export interface IApiOptions {
+  method: string,
+  headers: {
+    'Content-Type': string,
+    Authorization: string,
+  },
+  body: string,
+}
 export const generateMsg = async (options:IApiOptions) => {
   const response = await fetchApi(options)
 
