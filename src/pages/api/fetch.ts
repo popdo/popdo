@@ -5,6 +5,10 @@ import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser
 const httpsProxy = import.meta.env.HTTPS_PROXY
 const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
 
+
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
 export const post:APIRoute = async (context:any) => {
   const options = await context.request.json()
 //   const {headers,body} = options
