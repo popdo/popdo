@@ -21,5 +21,29 @@ export const post:APIRoute = async (context:any) => {
   
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  return response
+  
+  const stream = response.body
+  if (!stream) {
+    throw new Error('No stream')
+  }
+  const reader = stream.getReader()
+  const decoder = new TextDecoder('utf-8')
+  const data:any = []
+  try {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) {
+        break
+      }
+      const text = decoder.decode(value)
+      data.push(text)
+    }
+    return data
+  } catch (error) {
+    console.error(error)
+  } finally {
+    reader.releaseLock()
+  }
+  
+//   return response
 }
