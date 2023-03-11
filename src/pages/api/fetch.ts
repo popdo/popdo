@@ -6,8 +6,7 @@ const httpsProxy = import.meta.env.HTTPS_PROXY
 const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
 
 
-const encoder = new TextEncoder()
-const decoder = new TextDecoder()
+
 
 export const post:APIRoute = async (context:any) => {
   const options = await context.request.json()
@@ -19,6 +18,9 @@ export const post:APIRoute = async (context:any) => {
 //     method: 'POST',
 //     body: JSON.stringify(body),
 //   }
+  
+  const encoder = new TextEncoder()
+  const decoder = new TextDecoder()
   
   if (httpsProxy) {
     options['dispatcher'] = new ProxyAgent(httpsProxy)
