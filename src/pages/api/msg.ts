@@ -1,20 +1,9 @@
 import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'
-import { fetch } from 'undici'
+import { fetch, ProxyAgent } from 'undici'
 import type { APIRoute } from 'astro'
-interface IApiOptions {
-  method: string,
-  headers: {
-    'Content-Type': string,
-    Authorization: string,
-  },
-  body: string,
-}
-export const post:APIRoute = async (options:IApiOptions) => {
-  const response = await fetchApi(options)
-  console.log('api返回的信息xx', response)
 
-  return new Response(parseOpenAIStream(response))
-}
+const httpsProxy = import.meta.env.HTTPS_PROXY
+const baseUrl = (import.meta.env.OPENAI_API_BASE_URL || 'https://api.openai.com').trim().replace(/\/$/,'')
 
 /**
  * 封装解析器
@@ -82,10 +71,29 @@ const parseOpenAIStream = (rawRespone:Response) => {
  * @param options 
  * @returns 
  */
-const fetchApi = async (options: IApiOptions) => {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', options)
+export const post:APIRoute = async (context: any) => {
+  
+  const options = await context.request.json()
+  const {headers, body} = options
+  
+  const initOptions = {
+    headers,
+    method: 'POST',
+    body: JSON.stringify(body),
+  }
+  
+  if (httpsProxy) {
+    initOptions['dispatcher'] = new ProxyAgent(httpsProxy)
+  }
+  
+//   const response = await fetch('https://api.openai.com/v1/chat/completions', options)
+  
+  const response = await fetch(`${baseUrl}/v1/chat/completions`, initOptions) as Response
+  
   if (!response.ok) await handleFetchError(response)
-  return response
+  
+  return new Response(parseOpenAIStream(response))
+//   return response
 }
 
 /**
