@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro'
-import { parseOpenAIStream } from '@/utils/openAI'
 
 // #vercel-disable-blocks
 import { fetch, ProxyAgent } from 'undici'
@@ -25,7 +24,6 @@ export const post: APIRoute = async (context) => {
   // #vercel-end
 
   // @ts-ignore
-  const response = await fetch(`${baseUrl}/v1/chat/completions`, initOptions) as Response
+  return await fetch(`${baseUrl}/v1/chat/completions`, initOptions) as Response
 
-  return new Response(parseOpenAIStream(response))
 }
