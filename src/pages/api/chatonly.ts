@@ -16,9 +16,7 @@ export const post:APIRoute = async (context:any) => {
   
   // 将response对象转化为可读流
   const body = Readable.from(await response.arrayBuffer())
-  // 设置响应头
-  context.response.headers.set('Content-Type', 'application/json')
-  context.response.headers.set('Transfer-Encoding', 'chunked')
+
 
   return body
 
