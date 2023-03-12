@@ -14,14 +14,12 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  const data = await response.json() // 解析response中的数据部分
+  context.status = response.status
+  context.set(response.headers)
 
-  return { // 只返回需要的部分 
-    headers: response.headers,
-    status: response.status,
-    statusText: response.statusText,
-    body:data
-  }
+  context.body = response.body
+
+  return response
 
 //   return response
   
