@@ -15,9 +15,22 @@ export const post:APIRoute = async (context:any) => {
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
 
-//   const body = response.body;
-  const body = await response.text()
-  return body
+  // 将响应体转换为ReadableStream对象
+  const body = response.body
+
+  // 设置响应头
+  const headers = {
+    'Content-Type': 'application/json',
+    'Transfer-Encoding': 'chunked'
+  }
+
+  // 创建响应对象，包括流式输出
+  const res = new Response(body, { headers })
+
+  // 将响应体流式输出给前端
+  await body.pipeTo(context.response.body)
+
+  return res
 
 //   return new Response(body, {
 //     headers: response.headers,
