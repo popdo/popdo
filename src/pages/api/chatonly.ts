@@ -15,23 +15,11 @@ export const post:APIRoute = async (context:any) => {
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
 
-  // 将 Response 对象转换为 Readable 流
-  const stream = new Readable({
-    read() {
-      // 读取 Response 对象中的数据并写入流中
-      response.body.on('data', (chunk) => {
-        this.push(chunk)
-      })
+  // 将响应流传递给响应对象
+  const { headers } = response
+  const body = response.body.pipeThrough(new TextDecoderStream()).getReader()
 
-      // 当 Response 对象中的数据全部写入流中后，结束流
-      response.body.on('end', () => {
-        this.push(null)
-      })
-    }
-  })
-
-  // 返回流
-  return stream
+  return new Response(body, { headers })
 
 //   return new Response(body, {
 //     headers: response.headers,
