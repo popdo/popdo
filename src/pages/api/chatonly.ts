@@ -14,20 +14,8 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-
-  const body = response.body; const reader = body.getReader();
-
-return new Response( new ReadableStream({ async start(controller) { try { while (true) { const { done, value } = await reader.read(); if (done) { controller.close(); break; } controller.enqueue(value); } } catch (error) { controller.error(error); } }, }), { headers: response.headers, status: response.status, statusText: response.statusText, } ); 
-
-//   return new Response(body, {
-//     headers: response.headers,
-//     status: response.status,
-//     statusText: response.statusText,
-//   });
-
-//   return response
   
-//   return response
+  return response
   
   
 // 一：
