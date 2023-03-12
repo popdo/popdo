@@ -15,14 +15,23 @@ export const post:APIRoute = async (context:any) => {
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
 
-  // 设置响应头
-  context.response.headers.set('Content-Type', 'application/octet-stream')
-  context.response.headers.set('Content-Disposition', 'attachment;filename="completions.txt"')
+  // 将 Response 对象转换为 Readable 流
+  const stream = new Readable({
+    read() {
+      // 读取 Response 对象中的数据并写入流中
+      response.body.on('data', (chunk) => {
+        this.push(chunk)
+      })
 
-  // 将流式输出传递给前端
-  context.response.body = response.body
+      // 当 Response 对象中的数据全部写入流中后，结束流
+      response.body.on('end', () => {
+        this.push(null)
+      })
+    }
+  })
 
-  return context.response
+  // 返回流
+  return stream
 
 //   return new Response(body, {
 //     headers: response.headers,
