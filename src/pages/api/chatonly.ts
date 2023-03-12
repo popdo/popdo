@@ -14,11 +14,14 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  // 将response对象转化为可读流
-  const body = Readable.from(await response.arrayBuffer())
+  const headers = new Headers(response.headers);
+  const body = response.body;
 
-
-  return body
+  return new Response(body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
 
 //   return response
   
