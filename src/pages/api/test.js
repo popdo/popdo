@@ -1,6 +1,6 @@
 import { fetch, ProxyAgent } from 'undici'
 
-export const fetchApi = async (options: any) => {
+export const fetchApi = async (options) => {
   
   const response = await fetch('https://api.openai.com/v1/chat/completions', options)
 
@@ -11,7 +11,7 @@ export const fetchApi = async (options: any) => {
 }
 
 
-const handleFetchError = async (response: Response) => {
+const handleFetchError = async (response) => {
 
   const errorJson = await response.json()
 
