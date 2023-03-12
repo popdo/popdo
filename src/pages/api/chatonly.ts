@@ -15,9 +15,7 @@ export const post:APIRoute = async (context:any) => {
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
    // 设置响应头，支持流式输出
-  context.response.headers.set('Content-Type', 'text/event-stream');
-context.response.headers.set('Cache-Control', 'no-cache');
-context.response.headers.set('Connection', 'keep-alive');
+
   return {
   [Symbol.asyncIterator]: () => response.body.getReader(),
 };
