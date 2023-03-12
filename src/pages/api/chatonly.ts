@@ -16,13 +16,14 @@ export const post:APIRoute = async (context:any) => {
   
 
 //   const body = response.body;
-  const body = await response.json()
+  const body = await response.text()
+  return body
 
-  return new Response(body, {
-    headers: response.headers,
-    status: response.status,
-    statusText: response.statusText,
-  });
+//   return new Response(body, {
+//     headers: response.headers,
+//     status: response.status,
+//     statusText: response.statusText,
+//   });
 
 //   return response
   
