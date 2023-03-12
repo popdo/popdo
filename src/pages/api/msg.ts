@@ -74,21 +74,15 @@ const parseOpenAIStream = (rawRespone:Response) => {
 export const post:APIRoute = async (context: any) => {
   
   const options = await context.request.json()
-  const {headers, body} = options
-  
-  const initOptions = {
-    headers,
-    method: 'POST',
-    body: JSON.stringify(body),
-  }
+
   
   if (httpsProxy) {
-    initOptions['dispatcher'] = new ProxyAgent(httpsProxy)
+    options['dispatcher'] = new ProxyAgent(httpsProxy)
   }
   
 //   const response = await fetch('https://api.openai.com/v1/chat/completions', options)
   
-  const response = await fetch(`${baseUrl}/v1/chat/completions`, initOptions) as Response
+  const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
   if (!response.ok) await handleFetchError(response)
   
