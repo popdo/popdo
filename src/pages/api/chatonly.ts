@@ -14,8 +14,13 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
+  const modifiedResponse = new Response(response.body, response);
+  // 添加允许跨域访问的响应头
+  modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
+  return modifiedResponse;
   
-  return response
+  
+//   return response
   
   
 // 一：
