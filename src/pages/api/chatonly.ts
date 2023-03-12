@@ -15,7 +15,8 @@ export const post:APIRoute = async (context:any) => {
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
 
-  const body = response.body;
+//   const body = response.body;
+  const body = await response.text()
 
   return new Response(body, {
     headers: response.headers,
