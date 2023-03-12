@@ -16,7 +16,7 @@ export const post:APIRoute = async (context:any) => {
   
 
 //   const body = response.body;
-  const body = await response.text()
+  const body = await response.json()
 
   return new Response(body, {
     headers: response.headers,
