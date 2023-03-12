@@ -20,7 +20,7 @@ export const post:APIRoute = async (context:any) => {
     headers: response.headers,
     status: response.status,
     statusText: response.statusText,
-    data
+    body:data
   }
 
 //   return response
