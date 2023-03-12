@@ -16,9 +16,20 @@ export const post:APIRoute = async (context:any) => {
   
    // 设置响应头，支持流式输出
 
-  return {
-  [Symbol.asyncIterator]: () => response.body.getReader(),
-};
+  context.response.headers.set('Content-Type', 'text/event-stream')
+  context.response.headers.set('Cache-Control', 'no-cache')
+  context.response.headers.set('Connection', 'keep-alive')
+  context.response.headers.set('Access-Control-Allow-Origin', '*')
+  const body = context.response.body 
+  const reader = response.body.getReader() 
+  const writer = body.getWriter()
+  while (true) { 
+    const { done, value } = await reader.read() 
+    if (done) { break } 
+    await writer.write(value)
+  }
+  
+  return context.response
   
 //   return response
   
