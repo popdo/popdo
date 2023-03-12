@@ -14,7 +14,11 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  context.response.body = response.body
+   // 设置响应头，支持流式输出
+  context.response.headers.set("Content-Type", "text/event-stream")
+  context.response.headers.set("Cache-Control", "no-cache")
+  context.response.headers.set("Connection", "keep-alive")
+  context.response.headers.set("Transfer-Encoding", "chunked")
   return response
   
   
