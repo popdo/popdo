@@ -14,12 +14,13 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  context.status = response.status
-  context.set(response.headers)
+  // 将response对象转化为可读流
+  const body = Readable.from(await response.arrayBuffer())
+  // 设置响应头
+  context.response.headers.set('Content-Type', 'application/json')
+  context.response.headers.set('Transfer-Encoding', 'chunked')
 
-  context.body = response.body
-
-  return response
+  return body
 
 //   return response
   
