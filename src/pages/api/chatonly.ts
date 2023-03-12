@@ -14,11 +14,11 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-  const headers = new Headers(response.headers);
+
   const body = response.body;
 
   return new Response(body, {
-    headers,
+    headers: response.headers,
     status: response.status,
     statusText: response.statusText,
   });
