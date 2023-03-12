@@ -14,22 +14,11 @@ export const post:APIRoute = async (context:any) => {
 
   const response = await fetch(`${baseUrl}/v1/chat/completions`, options) as Response
   
-   // 设置响应头，支持流式输出
+   context.response.headers.set('Content-Type', 'application/octet-stream')
+  context.response.headers.set('Transfer-Encoding', 'chunked')
+  context.response.headers.set('X-Content-Type-Options', 'nosniff')
 
-  context.response.headers.set('Content-Type', 'text/event-stream')
-  context.response.headers.set('Cache-Control', 'no-cache')
-  context.response.headers.set('Connection', 'keep-alive')
-  context.response.headers.set('Access-Control-Allow-Origin', '*')
-  const body = context.response.body 
-  const reader = response.body.getReader() 
-  const writer = body.getWriter()
-  while (true) { 
-    const { done, value } = await reader.read() 
-    if (done) { break } 
-    await writer.write(value)
-  }
-  
-  return context.response
+  return response
   
 //   return response
   
